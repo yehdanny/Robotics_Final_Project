@@ -1,0 +1,87 @@
+<launch>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [waffle_pi]"/>
+  <arg name="green_bot"  default="green_bot"/>
+  <arg name="blue_bot" default="blue_bot"/>
+  <arg name="yellow_bot"  default="yellow_bot"/>
+  <arg name="kir_bot"   default="kir_bot"/>
+
+  <arg name="green_bot_x_pos" default="0.0"/>
+  <arg name="green_bot_y_pos" default="0.0"/>
+  <arg name="green_bot_z_pos" default="0.0"/>
+  <arg name="green_bot_yaw"   default="0.0"/>
+
+  <arg name="blue_bot_x_pos" default="0.0"/>
+  <arg name="blue_bot_y_pos" default="-1.0"/>
+  <arg name="blue_bot_z_pos" default="0.0"/>
+  <arg name="blue_bot_yaw"   default="0.0"/>
+
+  <arg name="yellow_bot_x_pos" default="0.0"/>
+  <arg name="yellow_bot_y_pos" default="-2.0"/>
+  <arg name="yellow_bot_z_pos" default="0.0"/>
+  <arg name="yellow_bot_yaw"   default="0.0"/>
+
+  <arg name="kir_bot_x_pos" default="1.0"/>
+  <arg name="kir_bot_y_pos" default="-1.0"/>
+  <arg name="kir_bot_z_pos" default="0.0"/>
+  <arg name="kir_bot_yaw"   default="0.0"/>
+
+  <arg name="color_green_bot" default="Gazebo/Green"/>
+  <arg name="color_blue_bot" default="Gazebo/Blue"/>
+  <arg name="color_yellow_bot" default="Gazebo/Yellow"/>
+  <arg name="color_kir_bot" default="Gazebo/Red"/>
+
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find final_project)/worlds/enclosed_area_3.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <group ns = "$(arg green_bot)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find final_project)/urdf/turtlebot3_$(arg model).urdf.xacro' color:=$(arg color_green_bot)" />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg green_bot)" />
+    </node>
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg green_bot) -x $(arg green_bot_x_pos) -y $(arg green_bot_y_pos) -z $(arg green_bot_z_pos) -Y $(arg green_bot_yaw) -param robot_description" />
+  </group>
+
+  <group ns = "$(arg blue_bot)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find final_project)/urdf/turtlebot3_$(arg model).urdf.xacro' color:=$(arg color_blue_bot)" />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg blue_bot)" />
+    </node>
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg blue_bot) -x $(arg blue_bot_x_pos) -y $(arg blue_bot_y_pos) -z $(arg blue_bot_z_pos) -Y $(arg blue_bot_yaw) -param robot_description" />
+  </group>
+
+  <group ns = "$(arg yellow_bot)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find final_project)/urdf/turtlebot3_$(arg model).urdf.xacro' color:=$(arg color_yellow_bot)" />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg yellow_bot)" />
+    </node>
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg yellow_bot) -x $(arg yellow_bot_x_pos) -y $(arg yellow_bot_y_pos) -z $(arg yellow_bot_z_pos) -Y $(arg yellow_bot_yaw) -param robot_description" />
+  </group>
+
+  <group ns = "$(arg kir_bot)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find final_project)/urdf/turtlebot3_$(arg model).urdf.xacro' color:=$(arg color_kir_bot)" />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg kir_bot)" />
+    </node>
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg kir_bot) -x $(arg kir_bot_x_pos) -y $(arg kir_bot_y_pos) -z $(arg kir_bot_z_pos) -Y $(arg kir_bot_yaw) -param robot_description" />
+  </group>
+
+</launch>
